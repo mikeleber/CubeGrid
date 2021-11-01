@@ -1,28 +1,45 @@
 package ch.m1m.hz.server;
 
+import com.hazelcast.config.ClasspathYamlConfig;
 import com.hazelcast.config.Config;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Map;
 
 public class HelloWorld {
-  public static void main(String[] args) {
-    Config helloWorldConfig = new Config();
-    helloWorldConfig.setClusterName("hello-world");
+    public static void main(String[] args) {
+      // Config helloWorldConfig = new Config();
+//        helloWorldConfig.setClusterName("hello-world");
 
+        ClasspathYamlConfig helloWorldConfig =new ClasspathYamlConfig("hazelcast.yaml");
+        System.out.println(System.getProperty("user.dir"));
+        HazelcastInstance hz = Hazelcast.newHazelcastInstance(helloWorldConfig);
+        HazelcastInstance hz2 = Hazelcast.newHazelcastInstance(helloWorldConfig);
+        HazelcastInstance hz3 = Hazelcast.newHazelcastInstance(helloWorldConfig);
 
-    HazelcastInstance hz = Hazelcast.newHazelcastInstance(helloWorldConfig);
-    HazelcastInstance hz2 = Hazelcast.newHazelcastInstance(helloWorldConfig);
-    HazelcastInstance hz3 = Hazelcast.newHazelcastInstance(helloWorldConfig);
+        Map<String, String> map = hz.getMap("my-distributed-map");
+        map.put("1", "John");
+        map.put("2", "Mary");
+        map.put("3", "Jane");
 
-    Map<String, String> map = hz.getMap("my-distributed-map");
-    map.put("1", "John");
-    map.put("2", "Mary");
-    map.put("3", "Jane");
+        System.out.println(map.get("1"));
+        System.out.println(map.get("2"));
+        System.out.println(map.get("3"));
+        // Enter data using BufferReader
+        String content = null;
+        while (!"quit".equalsIgnoreCase(content)) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-    System.out.println(map.get("1"));
-    System.out.println(map.get("2"));
-    System.out.println(map.get("3"));
-  }
+            try {
+                content = reader.readLine();
+                System.out.println(content);
+                System.out.println(map.put("3",content));
+            } catch (Exception e) {
+            }
+
+        }
+    }
 }

@@ -12,7 +12,7 @@ public class HelloWorldCallee {
   public static void main(String[] args) {
     ClientConfig helloWorldConfig = new ClientConfig();
     helloWorldConfig.setClusterName("hello-world");
-    //helloWorldConfig.getNetworkConfig().addAddress("10.80.1.7", "10.80.1.7:5702");
+    helloWorldConfig.getNetworkConfig().addAddress("172.20.0.121", "10.80.1.7:5702");
 
     HazelcastInstance hz = HazelcastClient.newHazelcastClient(helloWorldConfig);
 
