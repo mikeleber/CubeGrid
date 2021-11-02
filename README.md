@@ -16,10 +16,9 @@ A distributed computing scenario
 
 ## Reference
 ### Hazelcast documentation
+https://docs.hazelcast.com/home/
+
 https://docs.hazelcast.com/hazelcast/latest/getting-started/quickstart.html
-
-https://docs.hazelcast.com/management-center/4.2021.03/connecting-members
-
 
 
 
