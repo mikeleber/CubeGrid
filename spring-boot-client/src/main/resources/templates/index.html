@@ -1,3 +1,7 @@
+<div th:text="${headerBackground}" style="background: ${headerBackground}" >test</div>
+<div th:style="${headerBackground} == 'blue' ? 'background: blue' : 'background: green'">test</div>
+
+
 <div>
     <table>
         <thead>
