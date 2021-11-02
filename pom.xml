@@ -32,5 +32,6 @@
         <module>EmbeddedServer</module>
         <module>Client</module>
         <module>spring-boot-client</module>
+        <module>grid-proxy</module>
     </modules>
 </project>
