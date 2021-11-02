@@ -11,6 +11,10 @@ A distributed computing scenario
 -Dserver.port=8090
 -Dserver.port=8095
 ```
+or as program argument
+```
+--server.port=8095
+```
 
 ### Nginx reverse proxy setup
 
