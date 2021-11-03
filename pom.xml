@@ -11,9 +11,11 @@
     <version>1.0.0-SNAPSHOT</version>
 
     <properties>
+        <spring.boot.version>2.5.6</spring.boot.version>
         <jdk.version>8</jdk.version>
         <maven.compiler.source>${jdk.version}</maven.compiler.source>
         <maven.compiler.target>${jdk.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencyManagement>
@@ -21,10 +23,32 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>2.5.6</version>
+                <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ch.m1m.hz</groupId>
+                <artifactId>config-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.m1m.hz</groupId>
+                <artifactId>config-web-admin</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.m1m.hz</groupId>
+                <artifactId>config-web-app-usage</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -33,6 +57,9 @@
         <module>Client</module>
         <module>spring-boot-client</module>
         <module>grid-proxy</module>
+        <module>config-api</module>
+        <module>config-web-admin</module>
+        <module>config-web-app-usage</module>
     </modules>
     <profiles>
         <profile>
