@@ -1,5 +1,6 @@
 package com.frontbackend.thymeleaf.bootstrap.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,5 +28,15 @@ public class ApplicationPropertyRestController {
         return applicationPropertyService.getAppProperties(pagingRequest);
     }
 
+    @PostMapping("/updateRow")
+    public ApplicationProperty updateRow(@RequestBody ApplicationProperty property) throws JsonProcessingException {
+        applicationPropertyService.updateAppProperties(property);
+        return property;
+    }
 
+    @PostMapping("/deleteProperty")
+    public ApplicationProperty deleteProperty(@RequestBody ApplicationProperty property) throws JsonProcessingException {
+        applicationPropertyService.deleteProperty(property);
+        return property;
+    }
 }

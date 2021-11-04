@@ -49,18 +49,12 @@ public class ApplicationPropertyService {
     }
 
     public Page<ApplicationProperty> getAppProperties(PagingRequest pagingRequest) {
-
-//            List<ApplicationProperty> applicationProperties = objectMapper.readValue(getClass().getClassLoader()
-//                            .getResourceAsStream("employees.json"),
-//                    new TypeReference<List<ApplicationProperty>>() {
-//                    });
-
-
         return getPage(toPropertyList(appPropertyMap), pagingRequest);
-
+    }
+    public void updateAppProperties(ApplicationProperty property) throws JsonProcessingException {
+        appPropertyMap.put(property.getKey(),objectMapper.writeValueAsString(property));
 
     }
-
     @PostConstruct
     public void initialize() {
         ClientConfig helloWorldConfig = new ClientConfig();
@@ -69,6 +63,15 @@ public class ApplicationPropertyService {
         CompletableFuture.runAsync(() -> {
             hz = HazelcastClient.newHazelcastClient(helloWorldConfig);
             appPropertyMap = hz.getMap("config_app_example");
+            appPropertyMap.put("1","{\n" +
+                    "                \"id\": \"2\",\n" +
+                    "                    \"key\": \"Garrett Winters\",\n" +
+                    "                    \"applId\": \"Accountant\",\n" +
+                    "                    \"salary\": \"170.750\",\n" +
+                    "                    \"change_Date\": \"2011/07/25\",\n" +
+                    "                    \"value\": \"Tokyo\",\n" +
+                    "                    \"extn\": \"8422\"\n" +
+                    "            }");
         });
 
 
@@ -175,5 +178,9 @@ public class ApplicationPropertyService {
         }
 
         return EMPTY_COMPARATOR;
+    }
+
+    public void deleteProperty(ApplicationProperty property) {
+        appPropertyMap.remove(property.getKey());
     }
 }
