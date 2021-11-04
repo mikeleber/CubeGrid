@@ -63,15 +63,6 @@ public class ApplicationPropertyService {
         CompletableFuture.runAsync(() -> {
             hz = HazelcastClient.newHazelcastClient(helloWorldConfig);
             appPropertyMap = hz.getMap("config_app_example");
-            appPropertyMap.put("1","{\n" +
-                    "                \"id\": \"2\",\n" +
-                    "                    \"key\": \"Garrett Winters\",\n" +
-                    "                    \"applId\": \"Accountant\",\n" +
-                    "                    \"salary\": \"170.750\",\n" +
-                    "                    \"change_Date\": \"2011/07/25\",\n" +
-                    "                    \"value\": \"Tokyo\",\n" +
-                    "                    \"extn\": \"8422\"\n" +
-                    "            }");
         });
 
 
