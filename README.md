@@ -5,6 +5,18 @@ A distributed computing scenario
 
 ## Execute examples
 
+### Starting the hz cluster
+```
+hz start
+hz start
+```
+### Starting the management console
+```
+hz mc start
+# connect the mc to the cluster 'dev'
+# http://localhost:8080
+```
+
 ### Spring Boot Hazelcast Client
 
 ```
@@ -16,7 +28,12 @@ or as program argument
 --server.port=8095
 ```
 
-### Nginx reverse proxy setup
+## 3rd Party Libs
+### Togglz (java feature flag library)
+https://www.togglz.org/ (since version 2.3.0)
+
+https://www.togglz.org/apidocs/2.6.1.final/org/togglz/hazelcast/hazelcaststaterepository
+
 
 ## Reference
 ### Hazelcast documentation
