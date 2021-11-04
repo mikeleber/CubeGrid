@@ -23,24 +23,27 @@ public final class EmployeeComparators {
     static Map<Key, Comparator<Employee>> map = new HashMap<>();
 
     static {
-        map.put(new Key("name", Direction.asc), Comparator.comparing(Employee::getName));
-        map.put(new Key("name", Direction.desc), Comparator.comparing(Employee::getName)
+        map.put(new Key("key", Direction.asc), Comparator.comparing(Employee::getKey));
+        map.put(new Key("key", Direction.desc), Comparator.comparing(Employee::getKey)
                                                            .reversed());
 
-        map.put(new Key("start_date", Direction.asc), Comparator.comparing(Employee::getStartDate));
-        map.put(new Key("start_date", Direction.desc), Comparator.comparing(Employee::getStartDate)
+        map.put(new Key("start_date", Direction.asc), Comparator.comparing(Employee::getChange_Date));
+        map.put(new Key("start_date", Direction.desc), Comparator.comparing(Employee::getChange_Date)
                                                                  .reversed());
 
-        map.put(new Key("position", Direction.asc), Comparator.comparing(Employee::getPosition));
-        map.put(new Key("position", Direction.desc), Comparator.comparing(Employee::getPosition)
+        map.put(new Key("applId", Direction.asc), Comparator.comparing(Employee::getApplId));
+        map.put(new Key("applId", Direction.desc), Comparator.comparing(Employee::getApplId)
+                                                               .reversed());
+        map.put(new Key("description", Direction.asc), Comparator.comparing(Employee::getDescription));
+        map.put(new Key("description", Direction.desc), Comparator.comparing(Employee::getDescription)
                                                                .reversed());
 
         map.put(new Key("salary", Direction.asc), Comparator.comparing(Employee::getSalary));
         map.put(new Key("salary", Direction.desc), Comparator.comparing(Employee::getSalary)
                                                              .reversed());
 
-        map.put(new Key("office", Direction.asc), Comparator.comparing(Employee::getOffice));
-        map.put(new Key("office", Direction.desc), Comparator.comparing(Employee::getOffice)
+        map.put(new Key("value", Direction.asc), Comparator.comparing(Employee::getValue));
+        map.put(new Key("value", Direction.desc), Comparator.comparing(Employee::getValue)
                                                              .reversed());
 
         map.put(new Key("extn", Direction.asc), Comparator.comparing(Employee::getExtn));

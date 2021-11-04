@@ -33,9 +33,9 @@ public class EmployeeService {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
     public PageArray getEmployeesArray(PagingRequest pagingRequest) {
-        pagingRequest.setColumns(Stream.of("name", "position", "office", "start_date", "salary")
-                                       .map(Column::new)
-                                       .collect(Collectors.toList()));
+        pagingRequest.setColumns(Stream.of("key", "applId", "value", "start_date", "salary", "description")
+                .map(Column::new)
+                .collect(Collectors.toList()));
         Page<Employee> employeePage = getEmployees(pagingRequest);
 
         PageArray pageArray = new PageArray();
@@ -43,16 +43,16 @@ public class EmployeeService {
         pageArray.setRecordsTotal(employeePage.getRecordsTotal());
         pageArray.setDraw(employeePage.getDraw());
         pageArray.setData(employeePage.getData()
-                                      .stream()
-                                      .map(this::toStringList)
-                                      .collect(Collectors.toList()));
+                .stream()
+                .map(this::toStringList)
+                .collect(Collectors.toList()));
         return pageArray;
     }
 
     private List<String> toStringList(Employee employee) {
-        return Arrays.asList(employee.getName(), employee.getPosition(), employee.getOffice(), sdf.format(employee.getStartDate()),
+        return Arrays.asList(employee.getKey(), employee.getApplId(), employee.getValue(), sdf.format(employee.getChange_Date()),
                 employee.getSalary()
-                        .toString());
+                        .toString(), employee.getDescription());
     }
 
     public Page<Employee> getEmployees(PagingRequest pagingRequest) {
@@ -60,7 +60,7 @@ public class EmployeeService {
 
         try {
             List<Employee> employees = objectMapper.readValue(getClass().getClassLoader()
-                                                                        .getResourceAsStream("employees.json"),
+                            .getResourceAsStream("employees.json"),
                     new TypeReference<List<Employee>>() {
                     });
 
@@ -75,15 +75,15 @@ public class EmployeeService {
 
     private Page<Employee> getPage(List<Employee> employees, PagingRequest pagingRequest) {
         List<Employee> filtered = employees.stream()
-                                           .sorted(sortEmployees(pagingRequest))
-                                           .filter(filterEmployees(pagingRequest))
-                                           .skip(pagingRequest.getStart())
-                                           .limit(pagingRequest.getLength())
-                                           .collect(Collectors.toList());
+                .sorted(sortEmployees(pagingRequest))
+                .filter(filterEmployees(pagingRequest))
+                .skip(pagingRequest.getStart())
+                .limit(pagingRequest.getLength())
+                .collect(Collectors.toList());
 
         long count = employees.stream()
-                              .filter(filterEmployees(pagingRequest))
-                              .count();
+                .filter(filterEmployees(pagingRequest))
+                .count();
 
         Page<Employee> page = new Page<>(filtered);
         page.setRecordsFiltered((int) count);
@@ -95,22 +95,25 @@ public class EmployeeService {
 
     private Predicate<Employee> filterEmployees(PagingRequest pagingRequest) {
         if (pagingRequest.getSearch() == null || StringUtils.isEmpty(pagingRequest.getSearch()
-                                                                                  .getValue())) {
+                .getValue())) {
             return employee -> true;
         }
 
         String value = pagingRequest.getSearch()
-                                    .getValue();
+                .getValue();
 
-        return employee -> employee.getName()
-                                   .toLowerCase()
-                                   .contains(value)
-                || employee.getPosition()
-                           .toLowerCase()
-                           .contains(value)
-                || employee.getOffice()
-                           .toLowerCase()
-                           .contains(value);
+        return employee -> employee.getKey()
+                .toLowerCase()
+                .contains(value)
+                || employee.getApplId()
+                .toLowerCase()
+                .contains(value)
+                || employee.getValue()
+                .toLowerCase()
+                .contains(value)
+                || (employee.getDescription() != null ? employee.getDescription() : "")
+                .toLowerCase()
+                .contains(value);
     }
 
     private Comparator<Employee> sortEmployees(PagingRequest pagingRequest) {
@@ -120,11 +123,11 @@ public class EmployeeService {
 
         try {
             Order order = pagingRequest.getOrder()
-                                       .get(0);
+                    .get(0);
 
             int columnIndex = order.getColumn();
             Column column = pagingRequest.getColumns()
-                                         .get(columnIndex);
+                    .get(columnIndex);
 
             Comparator<Employee> comparator = EmployeeComparators.getComparator(column.getData(), order.getDir());
             if (comparator == null) {

@@ -15,13 +15,19 @@ import lombok.Setter;
 public class Employee {
 
     @JsonFormat(pattern = "yyyy/MM/dd")
-    @JsonProperty("start_date")
-    private Date startDate;
+    @JsonProperty("change_Date")
+    private Date change_Date;
     private Integer id;
-    private String position;
-    private String name;
+    private String applId;
+    private String key;
     private Double salary;
-    private String office;
+    private String value;
+    private String description;
     private Integer extn;
 
+//    private String applId;
+//    private String key;
+//    private String value;
+//    private String type;
+//    private String description;
 }

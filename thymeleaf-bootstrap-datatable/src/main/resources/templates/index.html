@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Spring Boot Thymeleaf Application - Bootstrap DataTable</title>
+    <title>Hazelcast Property View</title>
 
     <link th:rel="stylesheet" th:href="@{assets/datatable/datatables.css}"/>
     <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
@@ -47,20 +47,22 @@
             <table id="example" class="table table-bordered table-responsive" style="width: 100%">
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Office</th>
-                    <th>Start date</th>
+                    <th>Key</th>
+                    <th>ApplikationID</th>
+                    <th>Value</th>
+                    <th>Update Date</th>
                     <th>Salary</th>
+                    <th>Description</th>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
-                    <th>Name</th>
-                    <th>Position</th>
+                    <th>Key</th>
+                    <th>ApplikationID</th>
                     <th>Office</th>
-                    <th>Start date</th>
+                    <th>Update date</th>
                     <th>Salary</th>
+                    <th>Description</th>
                 </tr>
                 </tfoot>
             </table>
@@ -74,11 +76,12 @@
             <table id="exampleArray" class="table table-bordered table-responsive" style="width: 100%">
                 <thead>
                 <tr>
-                    <th style="width:20%">Name</th>
-                    <th style="width:20%">Position</th>
+                    <th style="width:20%">Key</th>
+                    <th style="width:20%">ApplikationID</th>
                     <th style="width:20%">Office</th>
                     <th style="width:20%">Start date</th>
                     <th style="width:20%">Salary</th>
+                    <th style="width:20%">Description</th>
                 </tr>
                 </thead>
                 <tfoot>
@@ -86,8 +89,9 @@
                     <th>Name</th>
                     <th>Position</th>
                     <th>Office</th>
-                    <th>Start date</th>
+                    <th>Update date</th>
                     <th>Salary</th>
+                    <th>Description</th>
                 </tr>
                 </tfoot>
             </table>
@@ -115,11 +119,12 @@
             }
         },
         "columns": [
-            {"data": "name", "width": "20%"},
-            {"data": "position","width": "20%"},
-            {"data": "office", "width": "20%"},
-            {"data": "start_date", "width": "20%"},
-            {"data": "salary", "width": "20%"}
+            {"data": "key", "width": "20%"},
+            {"data": "applId","width": "20%"},
+            {"data": "value", "width": "20%"},
+            {"data": "change_Date", "width": "10%"},
+            {"data": "salary", "width": "10%"},
+            {"data": "description", "width": "20%"}
         ]
     });
 
