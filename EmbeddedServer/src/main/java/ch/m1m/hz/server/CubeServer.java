@@ -8,14 +8,19 @@ import com.hazelcast.map.IMap;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class CubeServer {
+    public static boolean istRunning = true;
+
     public static void main(String[] args) {
-      // Config helloWorldConfig = new Config();
+
+        // Config helloWorldConfig = new Config();
 //        helloWorldConfig.setClusterName("hello-world");
 
-        ClasspathYamlConfig helloWorldConfig =new ClasspathYamlConfig("hazelcast.yaml");
+        ClasspathYamlConfig helloWorldConfig = new ClasspathYamlConfig("hazelcast.yaml");
         System.out.println(System.getProperty("user.dir"));
         HazelcastInstance hz = Hazelcast.newHazelcastInstance(helloWorldConfig);
         HazelcastInstance hz2 = Hazelcast.newHazelcastInstance(helloWorldConfig);
@@ -37,7 +42,10 @@ public class CubeServer {
             try {
                 content = reader.readLine();
                 System.out.println(content);
-                System.out.println(map.put("3",content));
+                if ("stop".equalsIgnoreCase(content)) {
+                    istRunning = false;
+                }
+                System.out.println(map.put("3", content));
             } catch (Exception e) {
             }
         }
@@ -45,9 +53,17 @@ public class CubeServer {
 
     private static Map<String, String> generateData(HazelcastInstance hz) {
         Map<String, String> map = hz.getMap("my-distributed-map");
-        map.put("1", "John");
-        map.put("2", "Mary");
-        map.put("3", "Jane");
+
+        while (istRunning) {
+            map.put("1", "John");
+            map.put("2", "Mary");
+            map.put("3", "Jane"+new Date());
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         return map;
     }
 }

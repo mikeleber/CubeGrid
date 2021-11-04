@@ -12,7 +12,7 @@
 
     <properties>
         <spring.boot.version>2.5.6</spring.boot.version>
-        <jdk.version>8</jdk.version>
+        <jdk.version>11</jdk.version>
         <maven.compiler.source>${jdk.version}</maven.compiler.source>
         <maven.compiler.target>${jdk.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -60,6 +60,7 @@
         <module>config-api</module>
         <module>config-web-admin</module>
         <module>config-web-app-usage</module>
+        <module>thymeleaf-bootstrap-datatable</module>
     </modules>
     <profiles>
         <profile>
