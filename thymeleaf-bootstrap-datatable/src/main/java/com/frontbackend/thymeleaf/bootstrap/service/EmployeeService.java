@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -32,31 +33,15 @@ public class EmployeeService {
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
-    public PageArray getEmployeesArray(PagingRequest pagingRequest) {
-        pagingRequest.setColumns(Stream.of("key", "applId", "value", "start_date", "salary", "description")
-                .map(Column::new)
-                .collect(Collectors.toList()));
-        Page<Employee> employeePage = getEmployees(pagingRequest);
 
-        PageArray pageArray = new PageArray();
-        pageArray.setRecordsFiltered(employeePage.getRecordsFiltered());
-        pageArray.setRecordsTotal(employeePage.getRecordsTotal());
-        pageArray.setDraw(employeePage.getDraw());
-        pageArray.setData(employeePage.getData()
-                .stream()
-                .map(this::toStringList)
-                .collect(Collectors.toList()));
-        return pageArray;
-    }
 
     private List<String> toStringList(Employee employee) {
         return Arrays.asList(employee.getKey(), employee.getApplId(), employee.getValue(), sdf.format(employee.getChange_Date()),
-                employee.getSalary()
-                        .toString(), employee.getDescription());
+                 employee.getDescription());
     }
 
     public Page<Employee> getEmployees(PagingRequest pagingRequest) {
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         try {
             List<Employee> employees = objectMapper.readValue(getClass().getClassLoader()

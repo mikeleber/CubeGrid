@@ -20,7 +20,6 @@ public class Employee {
     private Integer id;
     private String applId;
     private String key;
-    private Double salary;
     private String value;
     private String description;
     private Integer extn;

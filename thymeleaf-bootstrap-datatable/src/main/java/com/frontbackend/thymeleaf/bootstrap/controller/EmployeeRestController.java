@@ -28,8 +28,5 @@ public class EmployeeRestController {
         return employeeService.getEmployees(pagingRequest);
     }
 
-    @PostMapping("/array")
-    public PageArray array(@RequestBody PagingRequest pagingRequest) {
-        return employeeService.getEmployeesArray(pagingRequest);
-    }
+
 }

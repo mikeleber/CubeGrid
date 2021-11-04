@@ -38,10 +38,6 @@ public final class EmployeeComparators {
         map.put(new Key("description", Direction.desc), Comparator.comparing(Employee::getDescription)
                                                                .reversed());
 
-        map.put(new Key("salary", Direction.asc), Comparator.comparing(Employee::getSalary));
-        map.put(new Key("salary", Direction.desc), Comparator.comparing(Employee::getSalary)
-                                                             .reversed());
-
         map.put(new Key("value", Direction.asc), Comparator.comparing(Employee::getValue));
         map.put(new Key("value", Direction.desc), Comparator.comparing(Employee::getValue)
                                                              .reversed());
