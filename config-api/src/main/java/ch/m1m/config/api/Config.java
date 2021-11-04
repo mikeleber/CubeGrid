@@ -6,6 +6,24 @@ public class Config {
     private String key;
     private String value;
     private String type;
+    private String description;
+
+    public Config() {}
+
+    public Config(String applId, String key, String value, String type) {
+        this.applId = applId;
+        this.key = key;
+        this.value = value;
+        this.type = type;
+    }
+
+    public Config(String applId, String key, String value, String type, String description) {
+        this.applId = applId;
+        this.key = key;
+        this.value = value;
+        this.type = type;
+        this.description = description;
+    }
 
     public String getApplId() {
         return applId;
@@ -37,5 +55,13 @@ public class Config {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
