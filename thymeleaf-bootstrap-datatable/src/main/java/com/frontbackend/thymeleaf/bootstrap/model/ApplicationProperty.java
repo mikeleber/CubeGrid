@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Employee {
+public class ApplicationProperty {
 
     @JsonFormat(pattern = "yyyy/MM/dd")
     @JsonProperty("change_Date")
