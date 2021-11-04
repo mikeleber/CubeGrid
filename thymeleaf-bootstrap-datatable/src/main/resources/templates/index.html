@@ -27,6 +27,12 @@
         <div class="col-lg-10 mt-5 mb-5">
             <h3>Hazelcast Propertylist</h3>
             <table id="example" class="table table-bordered table-responsive" style="width: 100%">
+                <select name="appSelector" id="appSelector">
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="mercedes">Mercedes</option>
+                    <option value="audi">Audi</option>
+                </select>
                 <thead>
                 <tr>
                     <th>ApplikationID</th>
@@ -58,6 +64,8 @@
 <script th:src="@{assets/datatable/datatables.js}"></script>
 
 <script>
+
+
     $('#example').DataTable({
         "processing": true,
         "serverSide": true,
@@ -79,6 +87,8 @@
 
         ]
     });
+
+
 
 
 </script>

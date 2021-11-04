@@ -2,13 +2,19 @@ package com.frontbackend.thymeleaf.bootstrap.service;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.hazelcast.client.HazelcastClient;
+import com.hazelcast.client.config.ClientConfig;
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.map.IMap;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -23,37 +29,82 @@ import com.frontbackend.thymeleaf.bootstrap.model.paging.PagingRequest;
 
 import lombok.extern.slf4j.Slf4j;
 
+import javax.annotation.PostConstruct;
+
 @Slf4j
 @Service
 public class ApplicationPropertyService {
-
+    private HazelcastInstance hz;
+    private IMap<String, String> appPropertyMap;
     private static final Comparator<ApplicationProperty> EMPTY_COMPARATOR = (e1, e2) -> 0;
+    private static ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
 
-
-    private List<String> toStringList(ApplicationProperty employee) {
-        return Arrays.asList(employee.getKey(), employee.getApplId(), employee.getValue(), sdf.format(employee.getChange_Date()),
-                 employee.getDescription());
+    private List<String> toStringList(ApplicationProperty appProperty) {
+        return Arrays.asList(appProperty.getKey(), appProperty.getApplId(), appProperty.getValue(), sdf.format(appProperty.getChange_Date()),
+                appProperty.getDescription());
     }
 
     public Page<ApplicationProperty> getAppProperties(PagingRequest pagingRequest) {
-        ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
+//            List<ApplicationProperty> applicationProperties = objectMapper.readValue(getClass().getClassLoader()
+//                            .getResourceAsStream("employees.json"),
+//                    new TypeReference<List<ApplicationProperty>>() {
+//                    });
+
+
+        return getPage(toPropertyList(appPropertyMap), pagingRequest);
+
+
+    }
+
+    @PostConstruct
+    public void initialize() {
+        ClientConfig helloWorldConfig = new ClientConfig();
+        helloWorldConfig.setClusterName("cubegrid");
+        helloWorldConfig.getNetworkConfig().addAddress("172.20.0.121");
+        CompletableFuture.runAsync(() -> {
+            hz = HazelcastClient.newHazelcastClient(helloWorldConfig);
+            appPropertyMap = hz.getMap("config_app_example");
+        });
+
+
+    }
+
+    public static List<ApplicationProperty> toPropertyList(IMap<String, ?> map) {
+        if (map == null) {
+            return new ArrayList<>();
+        }
+        AtomicInteger  rowID = new AtomicInteger();
+        List<ApplicationProperty> mapAsString = map.keySet().stream()
+                .map(key -> propertyFromEntry(rowID.incrementAndGet(), key, map.get(key)))
+                .collect(Collectors.toList());
+        return mapAsString;
+    }
+
+    private static ApplicationProperty propertyFromEntry(int rowID, String key, Object o) {
+        ApplicationProperty aProp = null;
         try {
-            List<ApplicationProperty> employees = objectMapper.readValue(getClass().getClassLoader()
-                            .getResourceAsStream("employees.json"),
-                    new TypeReference<List<ApplicationProperty>>() {
-                    });
-
-            return getPage(employees, pagingRequest);
-
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            aProp = objectMapper.readValue(o.toString(), ApplicationProperty.class);
+            aProp.setId(rowID);
+            aProp.setChange_Date(new Date());
+            return aProp;
+        } catch (JsonProcessingException jpe) {
+            jpe.printStackTrace();
         }
 
-        return new Page<>();
+
+        return aProp;
+    }
+
+    public static String convertWithStream(Map<String, ?> map) {
+        String mapAsString = map.keySet().stream()
+                .map(key -> key + "=" + map.get(key))
+                .collect(Collectors.joining(", ", "{", "}"));
+        return mapAsString;
     }
 
     private Page<ApplicationProperty> getPage(List<ApplicationProperty> applicationProperties, PagingRequest pagingRequest) {
