@@ -48,3 +48,5 @@ https://docs.hazelcast.com/imdg/4.2/data-structures/topic
 
 https://datatables.net/
 
+### Maven Source Versioning Plugin
+https://www.baeldung.com/spring-git-information
