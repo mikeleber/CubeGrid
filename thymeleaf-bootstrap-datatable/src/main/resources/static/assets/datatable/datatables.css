@@ -217,4 +217,6 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   padding-right: 0;
 }
 
+table.dataTable tr.odd { background-color: lightgray; }// change #E2E4FF to white
 
+table.dataTable tr:hover td {background-color: gray;}

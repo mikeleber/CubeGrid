@@ -26,7 +26,7 @@
     <div class="row">
         <div class="col-lg-10 mt-5 mb-5">
             <h3>Hazelcast Propertylist</h3>
-            <table id="example" class="table table-bordered table-responsive" style="width: 100%">
+            <table id="example" class="table table-bordered table-responsive">
                 <select name="appSelector" id="appSelector">
                     <option value="example">Example</option>
                     <option value="Comet">Comet</option>
@@ -74,9 +74,9 @@
 var table;
 const createdCell = function(cell) {
 	let original;
-  cell.setAttribute('contenteditable', true)
+  //cell.setAttribute('contenteditable', true)
   cell.setAttribute('spellcheck', false)
-  cell.addEventListener("focus", function(e) {
+  cell.addEventListener("mousedown", function(e) {
 
 	    const row = table.row(e.target.parentElement)
 	    console.log('Row changed: ', row.data())

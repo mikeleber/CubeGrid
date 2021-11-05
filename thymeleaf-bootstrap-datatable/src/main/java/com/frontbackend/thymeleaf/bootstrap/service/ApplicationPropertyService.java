@@ -1,10 +1,8 @@
 package com.frontbackend.thymeleaf.bootstrap.service;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -18,7 +16,6 @@ import com.hazelcast.map.IMap;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.frontbackend.thymeleaf.bootstrap.model.ApplicationProperty;
 import com.frontbackend.thymeleaf.bootstrap.model.ApplicationPropertyComparators;
@@ -103,7 +100,7 @@ public class ApplicationPropertyService {
 
     private Page<ApplicationProperty> getPage(List<ApplicationProperty> applicationProperties, PagingRequest pagingRequest) {
         List<ApplicationProperty> filtered = applicationProperties.stream()
-                .sorted(sortEmployees(pagingRequest))
+                .sorted(sortAppProperties(pagingRequest))
                 .filter(filterAppProperties(pagingRequest))
                 .skip(pagingRequest.getStart())
                 .limit(pagingRequest.getLength())
@@ -128,23 +125,20 @@ public class ApplicationPropertyService {
         }
 
         String value = pagingRequest.getSearch()
-                .getValue();
+                .getValue().toLowerCase();
 
-        return employee -> employee.getKey()
+        return aProperty -> aProperty.getKey()
                 .toLowerCase()
                 .contains(value)
-                || employee.getApplId()
+                ||  aProperty.getValue()
                 .toLowerCase()
                 .contains(value)
-                || employee.getValue()
-                .toLowerCase()
-                .contains(value)
-                || (employee.getDescription() != null ? employee.getDescription() : "")
+                || (aProperty.getDescription() != null ? aProperty.getDescription() : "")
                 .toLowerCase()
                 .contains(value);
     }
 
-    private Comparator<ApplicationProperty> sortEmployees(PagingRequest pagingRequest) {
+    private Comparator<ApplicationProperty> sortAppProperties(PagingRequest pagingRequest) {
         if (pagingRequest.getOrder() == null) {
             return EMPTY_COMPARATOR;
         }
