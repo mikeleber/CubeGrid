@@ -11,7 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Component
 public class HazelcastConfigRepository {
@@ -35,6 +38,24 @@ public class HazelcastConfigRepository {
         hz = HazelcastClient.newHazelcastClient(hzClientConfig);
     }
 
+    public List<Config> getAll(String applId) {
+        String mapName = getHzMapNameForApplication(applId);
+        List<Config> confList = new ArrayList<>();
+        Map<String, String> map = hz.getMap(mapName);
+        Set<String> keys = map.keySet();
+        keys.stream().forEach(key -> {
+            String configJsonValue = map.get(key);
+            try {
+                Config config = objectMapper.readValue(configJsonValue, Config.class);
+                confList.add(config);
+            } catch (JsonProcessingException e) {
+                LOG.error("failed to parse value from map for key={} value={}", key, configJsonValue);
+            }
+        });
+
+        return confList;
+    }
+
     public void add(Config config) throws JsonProcessingException {
         String mapName = getHzMapNameForApplication(config.getApplId());
         String jsonConfigString = objectMapper.writeValueAsString(config);
@@ -54,10 +75,3 @@ public class HazelcastConfigRepository {
         map.clear();
     }
 }
-
-/*
-
-String json = "{ \"color\" : \"Black\", \"type\" : \"BMW\" }";
-Car car = objectMapper.readValue(json, Car.class);
-
-*/
