@@ -5,7 +5,7 @@ A distributed computing scenario
 
 ## Execute examples
 
-### Starting the hz cluster
+### Starting the hz cluster (ClusterName=dev)
 ```
 hz start
 hz start
@@ -44,7 +44,7 @@ https://docs.hazelcast.com/hazelcast/latest/getting-started/quickstart.html
 publish/subscribe
 https://docs.hazelcast.com/imdg/4.2/data-structures/topic
 
+### DataTables (jQuery)
 
-```
-$ install ...
-```
+https://datatables.net/
+
