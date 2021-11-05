@@ -48,5 +48,15 @@ https://docs.hazelcast.com/imdg/4.2/data-structures/topic
 
 https://datatables.net/
 
+## FAQ
+
+### Hetzner Openshift Route - Fix
+Route ist von aussen nicht erreichbar.
+Lösung: route.yaml
+```
+spec:
+  tls:
+    termination: edge
+```
 ### Maven Source Versioning Plugin
 https://www.baeldung.com/spring-git-information

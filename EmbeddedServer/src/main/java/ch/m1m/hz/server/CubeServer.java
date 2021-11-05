@@ -17,8 +17,6 @@ public class CubeServer {
 
     public static void main(String[] args) {
 
-        // Config helloWorldConfig = new Config();
-//        helloWorldConfig.setClusterName("hello-world");
 
         ClasspathYamlConfig helloWorldConfig = new ClasspathYamlConfig("hazelcast.yaml");
         System.out.println(System.getProperty("user.dir"));
@@ -28,10 +26,6 @@ public class CubeServer {
 
         Map<String, String> map = generateData(hz);
 
-        System.out.println(map.get("1"));
-        System.out.println(map.get("2"));
-        System.out.println(map.get("3"));
-        // Enter data using BufferReader
         readDataFromCLI(map);
     }
 
@@ -52,7 +46,7 @@ public class CubeServer {
     }
 
     private static Map<String, String> generateData(HazelcastInstance hz) {
-        Map<String, String> map = hz.getMap("my-distributed-map");
+        Map<String, String> map = hz.getMap("config-app-example");
 
         while (istRunning) {
             map.put("1", "John");
