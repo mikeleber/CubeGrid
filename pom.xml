@@ -68,6 +68,7 @@
         <module>config-web-app-usage</module>
         <module>thymeleaf-bootstrap-datatable</module>
     </modules>
+
     <profiles>
         <profile>
             <!-- When built in OpenShift the 'openshift' profile will be used when invoking mvn. -->
@@ -78,6 +79,7 @@
             <build>
                 <finalName>SampleApp</finalName>
                 <plugins>
+
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-jar-plugin</artifactId>
