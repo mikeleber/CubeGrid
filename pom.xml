@@ -13,7 +13,7 @@
     <properties>
         <hazelcast.version>5.0</hazelcast.version>
         <spring.boot.version>2.5.6</spring.boot.version>
-        <jdk.version>8</jdk.version>
+        <jdk.version>11</jdk.version>
         <maven.compiler.source>${jdk.version}</maven.compiler.source>
         <maven.compiler.target>${jdk.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -55,7 +55,11 @@
                 <artifactId>config-web-app-usage</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.hazelcast</groupId>
+                <artifactId>hazelcast</artifactId>
+                <version>5.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -67,6 +71,7 @@
         <module>config-api</module>
         <module>config-web-admin</module>
         <module>config-web-app-usage</module>
+        <module>thymeleaf-bootstrap-datatable</module>
     </modules>
     <profiles>
         <profile>

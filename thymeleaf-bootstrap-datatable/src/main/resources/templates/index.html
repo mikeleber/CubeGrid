@@ -1,0 +1,169 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Hazelcast Property View</title>
+
+    <link th:rel="stylesheet" th:href="@{assets/datatable/datatables.css}"/>
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">Codecamp Distributed Data Structures</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-10 mt-5 mb-5">
+            <h3>Hazelcast Propertylist</h3>
+            <table id="example" class="table table-bordered table-responsive" style="width: 100%">
+                <select name="appSelector" id="appSelector">
+                    <option value="example">Example</option>
+                    <option value="Comet">Comet</option>
+                    <option value="KL-Amelie">KL-Amelie</option>
+                </select>
+                <thead>
+                <tr>
+                    <th>ApplikationID</th>
+                    <th>Key</th>
+                    <th>Value</th>
+                    <th>Description</th>
+
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>ApplikationID</th>
+                    <th>Key</th>
+                    <th>Value</th>
+                    <th>Description</th>
+                </tr>
+                </tfoot>
+            </table>
+            <span>
+            <div  style="margin-top: 50px" class="input-group">
+            <input id="UpdatePropertyKey" class="form-control form-control-lg" type="text"
+                   placeholder="A Property Key" aria-label=".form-control-lg example">
+                <input id="UpdatePropertyValue" class="form-control form-control-lg" type="text"
+                       placeholder="The Value" aria-label=".form-control-lg example">
+                <button id="UpdateProperty" type="button" class="btn btn-success">Insert/Update</button>
+                <button id="DeleteProperty" type="button" class="btn btn-danger">Delete</button>
+            </div></span>
+
+        </div>
+    </div>
+</div>
+
+
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{assets/datatable/datatables.js}"></script>
+
+<script>
+var table;
+const createdCell = function(cell) {
+	let original;
+  cell.setAttribute('contenteditable', true)
+  cell.setAttribute('spellcheck', false)
+  cell.addEventListener("focus", function(e) {
+
+	    const row = table.row(e.target.parentElement)
+	    console.log('Row changed: ', row.data())
+	    $('#UpdatePropertyKey').val(row.data().key);
+	    $('#UpdatePropertyValue').val(row.data().value);
+
+  })
+}
+// Example POST method implementation:
+async function postData(url = '', data = {}) {
+    // Default options are marked with *
+    const response = await fetch(url, {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: JSON.stringify(data) // body data type must match "Content-Type" header
+    });
+    return response.json(); // parses JSON response into native JavaScript objects
+}
+
+    $('#example').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "applicationProperties",
+            "type": "POST",
+            "dataType": "json",
+            "contentType": "application/json",
+            "data": function (d) {
+                return JSON.stringify(d);
+            }
+        },
+        columnDefs: [{
+        targets: '_all',
+        createdCell: createdCell
+        }],
+        "columns": [
+            {"data": "applId","width": "20%"},
+            {"data": "key", "width": "20%"},
+            {"data": "value", "width": "20%"},
+            {"data": "description", "width": "40%"}
+
+
+        ]
+    });
+
+table = $('#example').DataTable();
+
+
+$('#UpdateProperty').click(function() {
+
+    var keyValue=$('#UpdatePropertyKey').val();
+    var propValue=$('#UpdatePropertyValue').val();
+
+       console.log(event.target.value);
+    postData("applicationProperties/updateRow", {
+        applId: "example",
+        key: keyValue,
+        value: propValue
+    });
+location.reload();
+});
+
+$('#DeleteProperty').click(function() {
+
+    var keyValue=$('#UpdatePropertyKey').val();
+    var propValue=$('#UpdatePropertyValue').val();
+
+       console.log(event.target.value);
+    postData("applicationProperties/deleteProperty", {
+        applId: "example",
+        key: keyValue,
+        value: propValue
+    });
+location.reload();
+});
+
+
+
+</script>
+
+</body>
+</html>

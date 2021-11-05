@@ -4,6 +4,9 @@ import com.hazelcast.core.EntryAdapter;
 import com.hazelcast.core.EntryEvent;
 import com.hazelcast.core.EntryListener;
 
+import java.util.Map;
+import java.util.stream.Collectors;
+
 public class CubeMapEntryListener extends EntryAdapter {
     @Override
     public void entryAdded(EntryEvent event) {
@@ -13,7 +16,10 @@ public class CubeMapEntryListener extends EntryAdapter {
 
     @Override
     public void entryUpdated(EntryEvent event) {
+
         System.out.println("update " + event.getKey() + " oldValue:" + event.getOldValue() + " newValue:" + event.getValue());
         super.entryUpdated(event);
+
     }
+
 }
