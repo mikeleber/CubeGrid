@@ -67,6 +67,11 @@
         <module>config-web-admin</module>
         <module>config-web-app-usage</module>
         <module>thymeleaf-bootstrap-datatable</module>
+
+        <module>xday-config-cluster</module>
+        <module>xday-config-admin</module>
+        <module>xday-config-app-example</module>
+
     </modules>
 
     <profiles>
