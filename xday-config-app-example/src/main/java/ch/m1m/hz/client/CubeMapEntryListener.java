@@ -10,16 +10,19 @@ import java.util.stream.Collectors;
 public class CubeMapEntryListener extends EntryAdapter {
     @Override
     public void entryAdded(EntryEvent event) {
-        System.out.println("add    " + event.getKey() + " oldValue:" + event.getOldValue() + " newValue:" + event.getValue());
+        System.out.println("eventObserver: add    " + event.getKey() + " oldValue:" + event.getOldValue() + " newValue:" + event.getValue());
         super.entryAdded(event);
     }
 
     @Override
     public void entryUpdated(EntryEvent event) {
-
-        System.out.println("update " + event.getKey() + " oldValue:" + event.getOldValue() + " newValue:" + event.getValue());
+        System.out.println("eventObserver: update " + event.getKey() + " oldValue:" + event.getOldValue() + " newValue:" + event.getValue());
         super.entryUpdated(event);
-
     }
 
+    @Override
+    public void entryRemoved(EntryEvent event) {
+        System.out.println("eventObserver: remove " + event.getKey());
+        super.entryRemoved(event);
+    }
 }
