@@ -7,6 +7,7 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
 
 import javax.json.Json;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
@@ -29,20 +30,19 @@ public class CLIClient {
 
         while (true) {
 
+            Duration sleepDuration = evalDurationFromMap(map, "example.version.update.interval");
             printVersion(map);
 
             try {
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.MILLISECONDS.sleep(sleepDuration.toMillis());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-
     }
 
     private static void listenData(HazelcastInstance hz) {
         IMap<String, String> map = hz.getMap(HZ_CONF_APP_MAP);
-
         map.addEntryListener(new CubeMapEntryListener() {
         }, true);
     }
@@ -80,14 +80,21 @@ public class CLIClient {
     /* parse the 'value' key from the returned JSON object
      *
      */
-    private static boolean evalBooleanFromMap(IMap<String, String> map, String feature_ver_with_appname) {
+    private static String evalStringFromMap(IMap<String, String> map, String feature_ver_with_appname) {
         boolean rc = false;
         String mapEntryValue = map.get(feature_ver_with_appname);
         Gson gson = new Gson();
         ch.m1m.config.api.Config config = gson.fromJson(mapEntryValue, ch.m1m.config.api.Config.class);
-        if (config != null) {
-            rc = Boolean.valueOf(config.getValue());
-        }
-        return rc;
+        return config.getValue();
+    }
+
+    private static boolean evalBooleanFromMap(IMap<String, String> map, String key) {
+        String boolValue = evalStringFromMap(map, key);
+        return Boolean.parseBoolean(boolValue);
+    }
+
+    private static Duration evalDurationFromMap(IMap<String, String> map, String key) {
+        String value = evalStringFromMap(map, key);
+        return Duration.parse(value);
     }
 }
