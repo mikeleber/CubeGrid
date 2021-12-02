@@ -17,13 +17,12 @@ public class HazelcastClusterMain {
 
     public static void main(String[] args) {
 
-        ClasspathYamlConfig helloWorldConfig = new ClasspathYamlConfig("hazelcast.yaml");
-        System.out.println(System.getProperty("user.dir"));
-        HazelcastInstance hz = Hazelcast.newHazelcastInstance(helloWorldConfig);
+        ClasspathYamlConfig hzClientConfig = new ClasspathYamlConfig("hazelcast.yaml");
+        HazelcastInstance hz = Hazelcast.newHazelcastInstance(hzClientConfig);
 
         /*
-        HazelcastInstance hz2 = Hazelcast.newHazelcastInstance(helloWorldConfig);
-        HazelcastInstance hz3 = Hazelcast.newHazelcastInstance(helloWorldConfig);
+        HazelcastInstance hz2 = Hazelcast.newHazelcastInstance(hzClientConfig);
+        HazelcastInstance hz3 = Hazelcast.newHazelcastInstance(hzClientConfig);
         */
 
         Map<String, String> map = generateDataIfNotExists(hz);
